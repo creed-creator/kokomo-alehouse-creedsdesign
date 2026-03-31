@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kokomo Alehouse | Bar & Grill | Kokomo, IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --amber: #c0392b;
+    --dark-amber: #96301e;
+    --gold: #e8b84b;
+    --dark: #0f0d0c;
+    --text: #1e1612;
+    --cream: #faf8f4;
+    --light-gray: #f2ede6;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: transparent; transition: background 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled { background: rgba(15,13,12,0.95); backdrop-filter: blur(12px); box-shadow: 0 2px 20px rgba(0,0,0,0.35); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #fff; letter-spacing: 0.03em; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.88); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: #fff; }
+  .mobile-menu { display: none; position: fixed; inset: 0; background: rgba(15,13,12,0.97); z-index: 200; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { color: #fff; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 1.8rem; }
+  .mobile-menu .close { position: absolute; top: 20px; right: 24px; font-size: 2rem; color: #fff; cursor: pointer; background: none; border: none; }
+
+  .hero { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .hero-slides { position: absolute; inset: 0; }
+  .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease; animation: kenburns 9s ease-in-out infinite alternate; }
+  .hero-slide.active { opacity: 1; }
+  @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.07); } }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.5) 50%, rgba(15,13,12,0.9) 100%); }
+  .hero-content { position: relative; z-index: 2; text-align: center; color: #fff; padding: 0 24px; opacity: 0; transform: translateY(30px); animation: heroIn 1.2s 0.5s forwards ease; }
+  @keyframes heroIn { to { opacity: 1; transform: none; } }
+  .hero-badge { display: inline-block; border: 1px solid var(--gold); color: var(--gold); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 18px; border-radius: 2px; margin-bottom: 20px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 7vw, 5rem); line-height: 1.1; margin-bottom: 16px; text-shadow: 0 2px 20px rgba(0,0,0,0.5); }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero p { font-size: clamp(0.95rem, 2.5vw, 1.15rem); color: rgba(255,255,255,0.85); max-width: 540px; margin: 0 auto 32px; line-height: 1.6; }
+  .btn-primary { display: inline-block; background: var(--amber); color: #fff; padding: 14px 36px; border-radius: 3px; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 20px rgba(192,57,43,0.4); }
+  .btn-primary:hover { background: var(--dark-amber); transform: translateY(-2px); }
+  .scroll-hint { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.55); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .scroll-hint span { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent); }
+
+  .stats { background: var(--dark); color: #fff; display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; }
+  .stat-item { padding: 32px 16px; border-right: 1px solid rgba(255,255,255,0.07); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); display: block; }
+  .stat-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  section { padding: 80px 24px; }
+  .section-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; display: block; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--dark); margin-bottom: 16px; line-height: 1.2; }
+  .section-sub { font-size: 1rem; color: #6b5a4e; line-height: 1.7; max-width: 560px; }
+
+  .about-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .about-image { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+  .about-badge { position: absolute; bottom: -18px; right: -18px; background: var(--amber); color: #fff; padding: 18px; border-radius: 4px; text-align: center; box-shadow: 0 8px 30px rgba(192,57,43,0.4); }
+  .about-badge strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+  .about-badge span { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; }
+  .about-image-wrap { position: relative; }
+  .features { margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .feature-card { background: var(--light-gray); padding: 18px 20px; border-radius: 4px; border-left: 3px solid var(--gold); transition: transform 0.2s, box-shadow 0.2s; }
+  .feature-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .feature-card h4 { font-size: 0.9rem; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+  .feature-card p { font-size: 0.82rem; color: #6b5a4e; line-height: 1.5; }
+
+  .gallery-section { background: var(--dark); padding: 80px 24px; }
+  .gallery-section .section-title { color: #fff; }
+  .gallery-section .section-tag { color: var(--gold); }
+  .gallery-grid { max-width: 1100px; margin: 40px auto 0; display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 220px 220px; gap: 10px; }
+  .gallery-item { overflow: hidden; border-radius: 3px; }
+  .gallery-item:first-child { grid-row: span 2; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
+  .gallery-item:hover img { transform: scale(1.06); }
+
+  .menu-section { max-width: 1000px; margin: 0 auto; }
+  .menu-tabs { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
+  .menu-tab { padding: 8px 22px; border: 1.5px solid #ddd; background: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: #6b5a4e; border-radius: 2px; transition: all 0.2s; }
+  .menu-tab.active { background: var(--amber); border-color: var(--amber); color: #fff; }
+  .menu-panel { display: none; }
+  .menu-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .menu-card { background: #fff; border-radius: 4px; padding: 20px 24px; border: 1px solid #ede8e0; position: relative; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+  .menu-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.09); transform: translateY(-2px); }
+  .menu-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .menu-card:hover::after { transform: scaleX(1); }
+  .menu-item-name { font-weight: 600; font-size: 0.95rem; color: var(--dark); margin-bottom: 6px; }
+  .menu-item-desc { font-size: 0.82rem; color: #6b5a4e; line-height: 1.5; margin-bottom: 12px; }
+  .menu-item-price { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--amber); font-weight: 700; }
+
+  .pullquote { background: var(--dark); color: #fff; text-align: center; padding: 80px 40px; }
+  .pullquote blockquote { max-width: 700px; margin: 0 auto; font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3.5vw, 1.9rem); font-style: italic; line-height: 1.5; color: rgba(255,255,255,0.92); }
+  .pullquote cite { display: block; margin-top: 24px; font-family: 'Inter', sans-serif; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); font-style: normal; }
+
+  .contact-section { max-width: 1000px; margin: 0 auto; }
+  .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+  .contact-card { background: #fff; border: 1px solid #ede8e0; border-radius: 4px; padding: 28px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
+  .contact-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+  .contact-icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .contact-card h3 { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .contact-card a { color: var(--dark); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+  .contact-card a:hover { color: var(--amber); }
+
+  footer { background: var(--dark); color: rgba(255,255,255,0.5); text-align: center; padding: 28px 24px; font-size: 0.78rem; }
+  footer strong { color: var(--gold); }
+
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-badge { bottom: -10px; right: 10px; }
+    .features { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:first-child { grid-row: span 1; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo">Kokomo Alehouse</div>
+  <ul class="nav-links">
+    <li><a href="#about">Our Vibe</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Photos</a></li>
+    <li><a href="#contact">Find Us</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.querySelector('.mobile-menu').classList.add('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <button class="close" onclick="document.querySelector('.mobile-menu').classList.remove('open')">✕</button>
+  <a href="#about" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Our Vibe</a>
+  <a href="#menu" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Menu</a>
+  <a href="#gallery" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Photos</a>
+  <a href="#contact" onclick="document.querySelector('.mobile-menu').classList.remove('open')">Find Us</a>
+</div>
+
+<section class="hero">
+  <div class="hero-slides">
+    <div class="hero-slide active" style="background-image:url('photo1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('photo4.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('photo7.jpg')"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Kokomo's Local Craft Bar & Grill</div>
+    <h1>Great Food.<br><em>Cold Craft Beer.</em><br>Your Kind of Place.</h1>
+    <p>Half-pound burgers, wood-fired pizza, wings, tacos, and 25+ cold taps. Kokomo's neighborhood hangout — open for lunch and dinner.</p>
+    <a href="#menu" class="btn-primary">View the Menu</a>
+  </div>
+  <div class="scroll-hint"><span></span>Scroll</div>
+</section>
+
+<div class="stats">
+  <div class="stat-item"><strong class="stat-num">25+</strong><span class="stat-label">Beers on Tap</span></div>
+  <div class="stat-item"><strong class="stat-num">$10</strong><span class="stat-label">Half-lb Burger Thursday</span></div>
+  <div class="stat-item"><strong class="stat-num">$1</strong><span class="stat-label">Wings Wednesday</span></div>
+  <div class="stat-item"><strong class="stat-num">Local</strong><span class="stat-label">Owned & Run</span></div>
+</div>
+
+<section id="about">
+  <div class="about-grid">
+    <div class="about-image-wrap reveal">
+      <img src="photo2.jpg" alt="Kokomo Alehouse interior bar atmosphere Kokomo Indiana" class="about-image">
+      <div class="about-badge"><strong>Kokomo</strong><span>Indiana</span></div>
+    </div>
+    <div class="reveal">
+      <span class="section-tag">Our Vibe</span>
+      <h2 class="section-title">Where Kokomo<br>Comes to Eat & Drink</h2>
+      <p class="section-sub">The Kokomo Alehouse is your local craft bar and grill on Home Ave. House-made food, rotating craft taps, weekly specials that keep regulars coming back — and a laid-back atmosphere that makes everyone feel at home.</p>
+      <div class="features">
+        <div class="feature-card"><h4>Burger Thursday</h4><p>Half-pound burger + side for $10. Dine-in. Every Thursday.</p></div>
+        <div class="feature-card"><h4>Wing Wednesday</h4><p>$1 traditional wings all day for dine-in customers.</p></div>
+        <div class="feature-card"><h4>Pizza & Tacos</h4><p>Specialty pies and fresh-made tacos — not your average bar food.</p></div>
+        <div class="feature-card"><h4>Craft on Draft</h4><p>25+ rotating taps. Always something new to try alongside your meal.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-section" id="gallery">
+  <div style="max-width:1100px;margin:0 auto;" class="reveal">
+    <span class="section-tag">The Goods</span>
+    <h2 class="section-title" style="color:#fff;">Food Worth Staying For</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="photo3.jpg" alt="Kokomo Alehouse food Kokomo Indiana"></div>
+    <div class="gallery-item"><img src="photo5.jpg" alt="Kokomo Alehouse wings tacos"></div>
+    <div class="gallery-item"><img src="photo6.jpg" alt="Kokomo Alehouse drinks"></div>
+    <div class="gallery-item"><img src="photo8.jpg" alt="Kokomo Alehouse burgers"></div>
+    <div class="gallery-item"><img src="photo4.jpg" alt="Kokomo Alehouse bar atmosphere"></div>
+  </div>
+</section>
+
+<section id="menu" style="background: var(--light-gray);">
+  <div class="menu-section reveal">
+    <span class="section-tag">On the Menu</span>
+    <h2 class="section-title">Built for Real Hunger</h2>
+    <p class="section-sub" style="margin-bottom:40px;">Shareables, tacos, wings, pizza, wraps, and oven-baked subs. Plus weekly deals that make coming back easy.</p>
+    <div class="menu-tabs">
+      <button class="menu-tab active" onclick="showTab('burgers',this)">Burgers</button>
+      <button class="menu-tab" onclick="showTab('wings',this)">Wings</button>
+      <button class="menu-tab" onclick="showTab('pizza',this)">Pizza</button>
+      <button class="menu-tab" onclick="showTab('tacos',this)">Tacos & More</button>
+    </div>
+    <div id="tab-burgers" class="menu-panel active">
+      <div class="menu-card">
+        <div class="menu-item-name">Half-lb Burger</div>
+        <div class="menu-item-desc">Juicy half-pound patty, your way. With side — every Thursday special.</div>
+        <div class="menu-item-price">$10.00</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-item-name">Pizza Burger</div>
+        <div class="menu-item-desc">A fan favorite — burger meets all the flavors of a classic pizza.</div>
+        <div class="menu-item-price">Ask us</div>
+      </div>
+    </div>
+    <div id="tab-wings" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-item-name">Traditional Wings</div>
+        <div class="menu-item-desc">Crispy and sauced. $1 each on Wing Wednesdays for dine-in.</div>
+        <div class="menu-item-price">$1.00 ea (Wed)</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-item-name">Boneless Wings</div>
+        <div class="menu-item-desc">All the flavor, no bones. Wednesday special pricing available.</div>
+        <div class="menu-item-price">Ask us</div>
+      </div>
+    </div>
+    <div id="tab-pizza" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-item-name">Specialty Pizza</div>
+        <div class="menu-item-desc">Wood-fired specialty pies. $5 off Fridays — ask your server for today's selection.</div>
+        <div class="menu-item-price">Ask us</div>
+      </div>
+    </div>
+    <div id="tab-tacos" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-item-name">Tacos</div>
+        <div class="menu-item-desc">Fresh-made tacos on the menu. Great alongside a cold draft.</div>
+        <div class="menu-item-price">Ask us</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-item-name">Oven-Baked Sandwiches</div>
+        <div class="menu-item-desc">Hot, melty, built to order. A step above your average bar sandwich.</div>
+        <div class="menu-item-price">Ask us</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-item-name">Salads & Wraps</div>
+        <div class="menu-item-desc">Fresh options for when you want something a little lighter.</div>
+        <div class="menu-item-price">Ask us</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pullquote">
+  <blockquote>"The atmosphere is great, the food is legit, and the staff are amazing. Kokomo Alehouse is exactly what this city needed — a real neighborhood spot."</blockquote>
+  <cite>— A Regular, Kokomo IN</cite>
+</div>
+
+<section id="contact">
+  <div class="contact-section reveal">
+    <span class="section-tag">Come Hang Out</span>
+    <h2 class="section-title">Hours & Location</h2>
+    <p class="section-sub">Open Monday–Sunday, 11am–11pm. Right here in Kokomo — come for the wings, stay for the vibe.</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <h3>Address</h3>
+        <a href="https://www.google.com/maps/search/1134+Home+Ave+Kokomo+IN+46902" target="_blank">1134 Home Ave<br>Kokomo, IN 46902</a>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <h3>Phone</h3>
+        <a href="tel:7658688230">(765) 868-8230</a>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">🕐</div>
+        <h3>Hours</h3>
+        <a href="#contact">Mon–Sun: 11am–11pm</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>Kokomo Alehouse</strong> · 1134 Home Ave, Kokomo, IN 46902 · (765) 868-8230
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+  const slides = document.querySelectorAll('.hero-slide');
+  let cur = 0;
+  setInterval(() => {
+    slides[cur].classList.remove('active');
+    cur = (cur + 1) % slides.length;
+    slides[cur].classList.add('active');
+  }, 5000);
+  function showTab(id, btn) {
+    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.menu-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
